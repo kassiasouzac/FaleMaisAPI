@@ -1,5 +1,9 @@
 ﻿using FaleMaisAPI.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Xml;
 
 namespace FaleMaisAPI.Controllers
 {
@@ -14,7 +18,7 @@ namespace FaleMaisAPI.Controllers
             _service = service;
         }
 
-
+        
         [HttpPost]
         public ActionResult CalcularValorLigacao(string dddOrigem, string dddDestino, int minutos, int planoId)
         {
@@ -24,6 +28,28 @@ namespace FaleMaisAPI.Controllers
 
             return Ok(new { valorComPlano, valorSemPlano });
 
+        }
+
+        
+        [HttpGet("/api/calculadora/planos")]
+  
+        public ActionResult ListarPlanos()
+        {
+
+            var lista =_service.GetPlanos();
+
+           
+            return Ok(lista);
+        }
+
+        
+        [HttpGet("/api/calculadora/ddds")]
+        public ActionResult ListarDDD()
+        {
+            var lista = _service.GetDDD();
+
+           
+            return Ok(lista);
         }
 
 

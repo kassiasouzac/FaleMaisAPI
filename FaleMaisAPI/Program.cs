@@ -14,6 +14,20 @@ namespace FaleMaisAPI
             builder.Services.AddScoped<IPlanoRepository, PlanoRepository>();
             builder.Services.AddScoped<ITarifaRepository, TarifaRepository>();
             builder.Services.AddScoped<ICalculoService, CalculoService>();
+            
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();
+                        policy.AllowAnyMethod();
+                        policy.AllowAnyHeader();
+                        
+                    });
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +46,8 @@ namespace FaleMaisAPI
   
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
