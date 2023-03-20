@@ -1,9 +1,7 @@
 ﻿using FaleMaisAPI.Interfaces;
-using Microsoft.AspNetCore.Cors;
+using FaleMaisAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Xml;
+
 
 namespace FaleMaisAPI.Controllers
 {
@@ -20,11 +18,12 @@ namespace FaleMaisAPI.Controllers
 
         
         [HttpPost]
-        public ActionResult CalcularValorLigacao(string dddOrigem, string dddDestino, int minutos, int planoId)
+        public ActionResult CalcularValorLigacao([FromBody] Dados dados)
         {
 
-            var valorSemPlano = _service.Calcular(dddOrigem, dddDestino, minutos);
-            var valorComPlano = _service.CalcularComPlano(dddOrigem, dddDestino, minutos, planoId);
+
+            var valorSemPlano = _service.Calcular(dados.dddOrigem, dados.dddDestino, dados.minutos);
+            var valorComPlano = _service.CalcularComPlano(dados.dddOrigem, dados.dddDestino, dados.minutos, dados.planoId);
 
             return Ok(new { valorComPlano, valorSemPlano });
 

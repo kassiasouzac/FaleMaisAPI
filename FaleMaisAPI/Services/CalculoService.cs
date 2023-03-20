@@ -1,6 +1,7 @@
 ﻿using FaleMaisAPI.Interfaces;
 using FaleMaisAPI.Models;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace FaleMaisAPI.Services
 {
@@ -26,7 +27,7 @@ namespace FaleMaisAPI.Services
         {
             var tarifa =  _tarifaRepository.Get(dddOrigem, dddDestino) ?? throw new ArgumentException("Tarifa não encontrada para as cidades de origem e destino informadas.");
 
-            var valor =  tarifa.ValorPorMinuto * minutos;
+            var valor =  Math.Round(tarifa.ValorPorMinuto * minutos, 2);
             return valor;
         }
 
@@ -35,7 +36,7 @@ namespace FaleMaisAPI.Services
             var tarifa = _tarifaRepository.Get(dddOrigem, dddDestino) ?? throw new ArgumentException("Tarifa não encontrada para as cidades de origem e destino informadas.");
             var planoFaleMais = _planoRepository.Get(planoId) ?? throw new ArgumentException("Plano FaleMais não encontrado.");
             var minutosExcedentes = minutos - planoFaleMais.MinutosIncluidos;
-            var valorComPlano = minutosExcedentes <= 0 ? 0 : (minutosExcedentes * tarifa.ValorPorMinuto * 1.1);
+            var valorComPlano = Math.Round(minutosExcedentes <= 0 ? 0 : (minutosExcedentes * tarifa.ValorPorMinuto * 1.1), 2);
 
             return valorComPlano;
         }
